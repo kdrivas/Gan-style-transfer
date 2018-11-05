@@ -41,16 +41,17 @@ def prepare_discriminator_data(pos_samples, neg_samples, gpu=False):
     """
 
     inp = torch.cat((pos_samples, neg_samples), 0).type(torch.LongTensor)
-    target = torch.ones(pos_samples.size()[0] + neg_samples.size()[0])
+    target = torch.ones(pos_samples.size()[0] + neg_samples.size()[0])#.type(torch.LongTensor)
     target[pos_samples.size()[0]:] = 0
-
+    #target = target.type(torch.LongTensor)
+    
     # shuffle
     perm = torch.randperm(target.size()[0])
     target = target[perm]
     inp = inp[perm]
 
-    inp = Variable(inp)
-    target = Variable(target)
+    inp = Variable(inp).type(torch.LongTensor)
+    target = Variable(target).type(torch.LongTensor)
 
     if gpu:
         inp = inp.cuda()
